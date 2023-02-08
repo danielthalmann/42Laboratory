@@ -25,6 +25,12 @@ public class Duplicate : MonoBehaviour
         }
 
         Debug.Log(chains.Count);
+
+        PlayerMove move = GetComponent<PlayerMove>();
+        if (move != null)
+        {
+            move.player = chains[0];
+        }
         
     }
 
