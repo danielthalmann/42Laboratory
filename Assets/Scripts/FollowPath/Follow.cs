@@ -14,7 +14,7 @@ public class Follow : MonoBehaviour
 
     private float direction = +1.0f;
     private float currentT = 0.0f;
-
+    private int currentSegment = 0;
 
 
     // Start is called before the first frame update
@@ -29,19 +29,48 @@ public class Follow : MonoBehaviour
     {
 
         currentT += (1.0f / (50.0f / speed)) * Time.deltaTime * direction;
+        if (currentT > 1.9f)
+        {
+            currentT = 1.9f;
+        }
+        if (currentT < -1.9f)
+        {
+            currentT = -1.9f;
+        }
 
         if (currentT > 1.0f) 
-        { 
-            currentT = 1.0f;
-            direction = -direction;
+        {
+            currentSegment++;
+            if (currentSegment < (vectors.Count / 3))
+            {
+                currentT -= 1.0f;
+
+            } else {
+                
+                currentT = 1.0f;
+                direction = -direction;
+                currentSegment--;
+            }
 
         } else if (currentT < 0.0f)
         {
-            currentT = 0.0f;
-            direction = -direction;
+            currentSegment--;
+            if (currentSegment > -1)
+            {
+                currentT += 1.0f;
+            } else
+            {
+                currentT = 0.0f;
+                direction = -direction;
+                currentSegment++;
+            }
         }
 
-        target.position = bezier(vectors[0].position, vectors[1].position, vectors[2].position, vectors[3].position, currentT);
+        target.position = bezier(
+            vectors[(currentSegment * 3) + 0].position, 
+            vectors[(currentSegment * 3) + 1].position, 
+            vectors[(currentSegment * 3) + 2].position, 
+            vectors[(currentSegment * 3) + 3].position, currentT);
 
 
     }
