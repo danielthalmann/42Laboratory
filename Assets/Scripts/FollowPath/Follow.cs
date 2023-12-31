@@ -9,6 +9,7 @@ public class Follow : MonoBehaviour
 
     public List<Transform> vectors = new List<Transform>();
     public Transform target;
+    [Separator(2, 20)]
     [Range(0f, 100f)]
     public float speed = 30.0f;
 
@@ -76,7 +77,7 @@ public class Follow : MonoBehaviour
     }
 
     
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         if (vectors.Count < 4)
             return;
