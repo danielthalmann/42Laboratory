@@ -1,27 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 public class Path : MonoBehaviour
 {
 
-    public List<Transform> vectors = new List<Transform>();
-    public Transform target;
-    [Separator(2, 20)]
-    [Range(0f, 100f)]
-    public float speed = 30.0f;
+    public List<Vector> vectors = new List<Vector>();
 
-    private float direction = +1.0f;
-    private float currentT = 0.0f;
-    private int currentSegment = 0;
+    public bool helper = true;
 
+    [Range(0f, 1.0f)]
+    public float position = 0.0f;
+
+    //private float direction = +1.0f;
+    //private float currentT = 0.0f;
+    //private int currentSegment = 0;
+
+    private void Awake()
+    {
+        Vector v;
+        
+        v = new Vector();
+        v.curveLeft = new Vector3(1.0f, 2.0f , 0.0f);
+        v.curveRight = new Vector3(1.0f, 2.0f, 0.0f);
+        vectors.Add(v);
+
+        v = new Vector();
+        v.curveLeft = new Vector3(1.0f, 2.0f, 0.0f);
+        v.curveRight = new Vector3(1.0f, 2.0f, 0.0f);
+        vectors.Add(v);
+
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        target.position = vectors[0].position;
         
     }
 
@@ -29,76 +47,60 @@ public class Path : MonoBehaviour
     void Update()
     {
 
-        currentT += (1.0f / (50.0f / speed)) * Time.deltaTime * direction;
-        if (currentT > 1.9f)
-        {
-            currentT = 1.9f;
-        }
-        if (currentT < -1.9f)
-        {
-            currentT = -1.9f;
-        }
-
-        if (currentT > 1.0f) 
-        {
-            currentSegment++;
-            if (currentSegment < (vectors.Count / 3))
-            {
-                currentT -= 1.0f;
-
-            } else {
-                
-                currentT = 1.0f;
-                direction = -direction;
-                currentSegment--;
-            }
-
-        } else if (currentT < 0.0f)
-        {
-            currentSegment--;
-            if (currentSegment > -1)
-            {
-                currentT += 1.0f;
-            } else
-            {
-                currentT = 0.0f;
-                direction = -direction;
-                currentSegment++;
-            }
-        }
-
-        target.position = bezier(
-            vectors[(currentSegment * 3) + 0].position, 
-            vectors[(currentSegment * 3) + 1].position, 
-            vectors[(currentSegment * 3) + 2].position, 
-            vectors[(currentSegment * 3) + 3].position, currentT);
-
-
     }
 
     
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
-        if (vectors.Count < 4)
+        Vector3 p;
+        float t;
+
+        if (vectors.Count < 2)
             return;
 
-        float steps = 1.0f / speed;
+        float steps = 1.0f / 40;
 
-        Gizmos.DrawSphere(vectors[0].position, 0.5f);
+        Vector3 last = vectors[0].getPoint(transform);
 
-        for (int i = 0; i < (vectors.Count / 3) ; i++)
+        for (int i = 0; i < vectors.Count - 1; i++)
         {
 
-            for ( float t = steps; t < 1.0f; t += steps)
+            if (helper)
             {
-                Vector3 p = bezier(vectors[0 + (i * 3)].position, vectors[1 + (i * 3)].position, vectors[2 + (i * 3)].position, vectors[3 + (i * 3)].position, t);
-                Gizmos.DrawSphere(p, 0.5f);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(vectors[i].getPoint(transform), vectors[i].getCurveRight(transform));
+                Gizmos.DrawLine(vectors[i + 1].getPoint(transform), vectors[i + 1].getCurveLeft(transform));
+            }
+
+            for (t = steps; t < 1.0f; t += steps)
+            {
+                p = bezier(vectors[i].getPoint(transform), vectors[i].getCurveRight(transform), vectors[i + 1].getCurveLeft(transform), vectors[i + 1].getPoint(transform), t);
+                
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(last, p);
+
+                last = p;
+                // Gizmos.DrawSphere(p, 0.5f);
             }
 
         }
+        Gizmos.DrawLine(last, vectors[vectors.Count - 1].getPoint(transform));
 
-        Gizmos.DrawSphere(vectors[vectors.Count - 1].position, 0.5f);
+        p = getPositionAt(position);
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(p, 0.5f); 
 
+    }
+
+    Vector3 getPositionAt(float pos)
+    {
+        if (pos >= 1.0f) {
+            return vectors[vectors.Count - 1].getPoint(transform);
+        }
+        int segment = (int)(position * (vectors.Count - 1));
+        float t = ((position * (vectors.Count - 1)) - segment);
+        return bezier(vectors[segment].getPoint(transform), vectors[segment].getCurveRight(transform), vectors[segment + 1].getCurveLeft(transform), vectors[segment + 1].getPoint(transform), t);
     }
 
 

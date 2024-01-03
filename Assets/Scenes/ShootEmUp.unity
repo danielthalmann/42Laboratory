@@ -1420,7 +1420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 8334878729959187886, guid: 298ce0c02220da04693ec0d79e8e1c19, type: 3}
   speed: 0.2
-  interval: 1000
+  interval: 0.2
 --- !u!61 &1875498929
 BoxCollider2D:
   m_ObjectHideFlags: 0

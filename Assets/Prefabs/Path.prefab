@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1224327010065135418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1224327010065135416}
+  - component: {fileID: 1224327010065135419}
+  m_Layer: 0
+  m_Name: Path
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1224327010065135416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224327010065135418}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5, y: -0.81, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1224327010065135419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224327010065135418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a49e605c79bc3c47b2ab4cc2b7af22b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vectors:
+  - point: {x: -3.0332894, y: -0.6901559, z: 0}
+    curveLeft: {x: -3.5100856, y: -1.5502234, z: -0.0035327375}
+    curveRight: {x: -0.69983196, y: -5.4758587, z: 0.012347221}
+  - point: {x: 8.534185, y: -0.81139106, z: -0.00017151237}
+    curveLeft: {x: 7.097042, y: -4.1649714, z: -0.00017151237}
+    curveRight: {x: 10.824295, y: 5.396117, z: -0.00017151237}
+  - point: {x: 2.9169397, y: 7.6944427, z: 0.0010631979}
+    curveLeft: {x: 6.6216745, y: 5.877532, z: -0.00024010241}
+    curveRight: {x: -0.33656502, y: 9.37347, z: 0.0022122562}
+  - point: {x: 8.521768, y: 10.599386, z: 0.008368775}
+    curveLeft: {x: 4.4581404, y: 11.563168, z: 0.008094445}
+    curveRight: {x: 16.03717, y: 8.846639, z: 0.008368775}
+  - point: {x: 19.773392, y: 16.10854, z: 0.008368775}
+    curveLeft: {x: 15.850029, y: 13.2262, z: 0.008094445}
+    curveRight: {x: 21.866814, y: 17.005629, z: 0.008368775}
+  helper: 0
+  position: 0.232
