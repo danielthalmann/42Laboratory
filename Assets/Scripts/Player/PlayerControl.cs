@@ -32,9 +32,11 @@ public class PlayerControl : MonoBehaviour
 
     }
     */
-
     private void FixedUpdate()
     {
+
+        if (PlayerInput == null)
+            Start();
 
         Vector2 direction = PlayerInput.Player.Movement.ReadValue<Vector2>();
         direction *= speed;
@@ -44,8 +46,6 @@ public class PlayerControl : MonoBehaviour
 
         if (PlayerInput.Player.Fire.IsPressed())
         {
-            Debug.Log(elapse);
-
             if (elapse > interval) {
                 elapse = 0;
                 GameObject g = Instantiate(projectile, transform.position, transform.rotation);
@@ -53,6 +53,15 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log(other.gameObject.tag);
+        if (other.gameObject.CompareTag("FireEnemy"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 
 

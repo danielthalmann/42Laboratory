@@ -17,26 +17,6 @@ public class Path : MonoBehaviour
     [Range(0f, 1.0f)]
     public float position = 0.0f;
 
-    //private float direction = +1.0f;
-    //private float currentT = 0.0f;
-    //private int currentSegment = 0;
-
-    private void Awake()
-    {
-        Vector v;
-        
-        v = new Vector();
-        v.curveLeft = new Vector3(1.0f, 2.0f , 0.0f);
-        v.curveRight = new Vector3(1.0f, 2.0f, 0.0f);
-        vectors.Add(v);
-
-        v = new Vector();
-        v.curveLeft = new Vector3(1.0f, 2.0f, 0.0f);
-        v.curveRight = new Vector3(1.0f, 2.0f, 0.0f);
-        vectors.Add(v);
-
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -74,7 +54,7 @@ public class Path : MonoBehaviour
 
             for (t = steps; t < 1.0f; t += steps)
             {
-                p = bezier(vectors[i].getPoint(transform), vectors[i].getCurveRight(transform), vectors[i + 1].getCurveLeft(transform), vectors[i + 1].getPoint(transform), t);
+                p = Bezier(vectors[i].getPoint(transform), vectors[i].getCurveRight(transform), vectors[i + 1].getCurveLeft(transform), vectors[i + 1].getPoint(transform), t);
                 
 
                 Gizmos.color = Color.red;
@@ -87,25 +67,25 @@ public class Path : MonoBehaviour
         }
         Gizmos.DrawLine(last, vectors[vectors.Count - 1].getPoint(transform));
 
-        p = getPositionAt(position);
+        p = GetPositionAt(position);
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(p, 0.5f); 
 
     }
 
-    Vector3 getPositionAt(float pos)
+    public Vector3 GetPositionAt(float pos)
     {
         if (pos >= 1.0f) {
             return vectors[vectors.Count - 1].getPoint(transform);
         }
-        int segment = (int)(position * (vectors.Count - 1));
-        float t = ((position * (vectors.Count - 1)) - segment);
-        return bezier(vectors[segment].getPoint(transform), vectors[segment].getCurveRight(transform), vectors[segment + 1].getCurveLeft(transform), vectors[segment + 1].getPoint(transform), t);
+        int segment = (int)(pos * (vectors.Count - 1));
+        float t = ((pos * (vectors.Count - 1)) - segment);
+        return Bezier(vectors[segment].getPoint(transform), vectors[segment].getCurveRight(transform), vectors[segment + 1].getCurveLeft(transform), vectors[segment + 1].getPoint(transform), t);
     }
 
 
 
-    Vector3 bezier(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float t)
+    public Vector3 Bezier(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float t)
     {
         float ap = Mathf.Pow((1.0f - t), 3.0f);
         float bp = 3.0f * t * Mathf.Pow((1.0f - t), 2.0f);
